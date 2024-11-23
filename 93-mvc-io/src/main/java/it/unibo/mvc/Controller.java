@@ -10,7 +10,7 @@ public interface Controller {
 
     void setString(String newString);
 
-    String geString();
+    String getString();
 
     Collection<String> getHistory();
 

@@ -18,7 +18,7 @@ public final class SimpleController implements Controller {
     }
 
     @Override
-    public String geString() {
+    public String getString() {
         return this.nexString;
     }
 
@@ -31,6 +31,7 @@ public final class SimpleController implements Controller {
     public void printString() {
         if(Objects.nonNull(this.nexString)) {
             System.out.println(this.nexString);
+            this.historyString.add(nexString);
         } else {
             throw new IllegalStateException("the string is not set");
         }
