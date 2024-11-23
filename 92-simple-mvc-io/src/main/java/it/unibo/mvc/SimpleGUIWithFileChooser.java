@@ -1,9 +1,17 @@
 package it.unibo.mvc;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JFileChooser;
+import javax.swing.JTextField;
+import javax.swing.JOptionPane;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 
 /**
@@ -13,10 +21,12 @@ import java.awt.event.ActionListener;
 public final class SimpleGUIWithFileChooser {
 
     private final JFrame frame = new JFrame("Simple File Chooser");
-    private final Controller myController;
 
-    public SimpleGUIWithFileChooser (final Controller controller) {
-        this.myController = controller;
+    /**
+     * Constructor for SimpleGUIWithFileChoser.
+     * @param controller controller to be associated with the gui
+     */
+    public SimpleGUIWithFileChooser(final Controller controller) {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         final JPanel canvas = new JPanel();
         canvas.setLayout(new BorderLayout());
@@ -27,11 +37,11 @@ public final class SimpleGUIWithFileChooser {
         save.addActionListener(
             new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 try {
-                    myController.writeOnFile(myController.getCurrentFilePath());
-                } catch (Exception e1) {
-                    JOptionPane.showMessageDialog(save, "An error has occured", "Error",0);
+                    controller.writeOnFile(controller.getCurrentFilePath());
+                } catch (IOException e1) {
+                    JOptionPane.showMessageDialog(save, "An error has occured", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -42,15 +52,13 @@ public final class SimpleGUIWithFileChooser {
             new ActionListener() {
 
                 @Override
-                public void actionPerformed(ActionEvent e) {
-                    final JFileChooser fileChooser = new JFileChooser("Choose a file");
-                    if(fileChooser.showSaveDialog(browse) == JFileChooser.APPROVE_OPTION) {
-                        myController.setCurrentFile(fileChooser.getSelectedFile());
-                        pickedFile.setText(myController.getCurrentFilePath());
-                        return;
-                    } else if(fileChooser.showSaveDialog(browse) == JFileChooser.CANCEL_OPTION) {
-                        return;
-                    } else {
+                public void actionPerformed(final ActionEvent e) {
+                    final JFileChooser fileChooser = new JFileChooser();
+                    final int result = fileChooser.showSaveDialog(browse);
+                    if (result == JFileChooser.APPROVE_OPTION) {
+                        controller.setCurrentFile(fileChooser.getSelectedFile());
+                        pickedFile.setText(controller.getCurrentFilePath());
+                    } else if (result != JFileChooser.CANCEL_OPTION) {
                         JOptionPane.showMessageDialog(browse, "An error has occured", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
@@ -66,18 +74,25 @@ public final class SimpleGUIWithFileChooser {
         fileChoosingArea.add(browse, BorderLayout.LINE_END);
 
         final Dimension screeDimension = Toolkit.getDefaultToolkit().getScreenSize();
-        final int width = (int)screeDimension.getWidth()/5;
-        final int height = (int)screeDimension.getHeight()/5;
+        final int width = (int) screeDimension.getWidth() / 5;
+        final int height = (int) screeDimension.getHeight() / 5;
 
         frame.setSize(width, height);
         frame.setLocationByPlatform(true);
     }
 
+    /**
+     * Displays the GUI.
+     */
     public void display() {
         this.frame.setVisible(true);
     }
-    
-    public static void main(String[] args) {
+
+    /**
+     * Main.
+     * @param args
+     */
+    public static void main(final String[] args) {
         final SimpleGUIWithFileChooser myFileChooser = new SimpleGUIWithFileChooser(new Controller());
         myFileChooser.display();
     }
