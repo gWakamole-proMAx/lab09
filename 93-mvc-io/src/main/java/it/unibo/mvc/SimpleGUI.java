@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Collection;
 
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -22,6 +21,10 @@ public final class SimpleGUI {
 
     private final JFrame frame = new JFrame("GUI");
 
+    /**
+     * constructor that sets all the components of the SimpleGUI.
+     * @param myController the controller used for the functionalities
+     */
     public SimpleGUI(final Controller myController) {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         final JPanel canvas = new JPanel();
@@ -37,7 +40,7 @@ public final class SimpleGUI {
         printButton.addActionListener(
             new ActionListener() {
                 @Override
-                public void actionPerformed(ActionEvent e) {
+                public void actionPerformed(final ActionEvent e) {
                     myController.setString(textField.getText());
                     myController.printString(); 
                 }
@@ -46,10 +49,10 @@ public final class SimpleGUI {
         historyButton.addActionListener(
             new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 final StringBuilder historyString = new StringBuilder();
-                for (String string : myController.getHistory()) {
-                    historyString.append(string).append("\n");
+                for (final String string : myController.getHistory()) {
+                    historyString.append(string).append('\n');
                 }
                 textArea.setText(historyString.toString());
             }
@@ -62,19 +65,26 @@ public final class SimpleGUI {
         buttonsPanel.add(historyButton);
         buttonsPanel.add(printButton);
 
-        Dimension screeDimension = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = (int) screeDimension.getWidth() / 5;
-        int heigth = (int) screeDimension.getHeight() / 5;
+        final Dimension screeDimension = Toolkit.getDefaultToolkit().getScreenSize();
+        final int width = (int) screeDimension.getWidth() / 5;
+        final int heigth = (int) screeDimension.getHeight() / 5;
         frame.setSize(width, heigth);
         frame.setLocationByPlatform(true);
     }
 
+    /**
+     * Displays the GUI.
+     */
     public void display() {
         frame.setVisible(true);
     }
 
-    public static void main(String[] args) {
-        SimpleGUI myGui = new SimpleGUI(new SimpleController());
+    /**
+     * Main.
+     * @param args
+     */
+    public static void main(final String[] args) {
+        final SimpleGUI myGui = new SimpleGUI(new SimpleController());
         myGui.display();
     }
 }

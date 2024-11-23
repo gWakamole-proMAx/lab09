@@ -11,8 +11,11 @@ import java.util.Objects;
  */
 public final class SimpleController implements Controller {
     private String nexString;
-    final private Collection<String> historyString = new LinkedList<>();
-    
+    private final Collection<String> historyString = new LinkedList<>();
+
+    /**
+     * constructor for the Simple controller: sets the String to be printed to null.
+     */
     public SimpleController() {
         this.nexString = null;
     }
@@ -29,8 +32,8 @@ public final class SimpleController implements Controller {
 
     @Override
     public void printString() {
-        if(Objects.nonNull(this.nexString)) {
-            System.out.println(this.nexString);
+        if (Objects.nonNull(this.nexString)) {
+            System.out.println(this.nexString); // NOPMD: required by the excercise
             this.historyString.add(nexString);
         } else {
             throw new IllegalStateException("the string is not set");
@@ -38,7 +41,7 @@ public final class SimpleController implements Controller {
     }
 
     @Override
-    public void setString(String newString) {
+    public void setString(final String newString) {
         this.nexString = Objects.requireNonNull(newString);
     }
 }
